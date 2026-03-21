@@ -16,9 +16,9 @@ export default async function CoursesPage() {
   return (
     <SiteShell language={language} role={user.role}>
       <section>
-        <p className="text-sm uppercase tracking-[0.35em] text-gold">{dict.courseLibrary}</p>
-        <h1 className="mt-4 font-display text-5xl text-white">{dict.courseLibraryTitle}</h1>
-        <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <p className="text-xs uppercase tracking-[0.35em] text-gold sm:text-sm">{dict.courseLibrary}</p>
+        <h1 className="mt-3 font-display text-4xl text-white sm:mt-4 sm:text-5xl">{dict.courseLibraryTitle}</h1>
+        <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-6 md:grid-cols-2 xl:grid-cols-3">
           {translatedCourses.map((course) => (
             <CourseCard key={course.id} slug={course.slug} title={course.title} description={course.description} thumbnail={course.thumbnail} lessons={course.lessons.length} lessonsLabel={dict.lessonsLabel} />
           ))}

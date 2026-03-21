@@ -20,15 +20,15 @@ export default async function HomePage() {
   const translatedCourses = await translateCourseText(courses, language);
 
   return (
-    <div className="min-h-screen bg-aura px-6 py-8 text-white">
-      <div className="mx-auto max-w-7xl space-y-10">
+    <div className="min-h-screen bg-aura px-4 py-5 text-white sm:px-6 sm:py-8">
+      <div className="mx-auto max-w-7xl space-y-8 sm:space-y-10">
         <PublicHeader language={language} dict={dict} />
 
         <Hero dict={dict} />
 
-        <section className="space-y-6">
-          <p className="text-sm uppercase tracking-[0.35em] text-gold md:text-base">{dict.featuredCourses}</p>
-          <div className="grid gap-6 md:grid-cols-3">
+        <section className="space-y-5 sm:space-y-6">
+          <p className="text-2xl font-display uppercase tracking-[0.25em] text-gold sm:text-sm sm:tracking-[0.35em] md:text-base">{dict.featuredCourses}</p>
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 xl:grid-cols-3">
             {translatedCourses.map((course) => (
               <CourseCard
                 key={course.id}
