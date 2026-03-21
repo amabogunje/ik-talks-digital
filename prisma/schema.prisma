@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Language {
+  EN
+  FR
+  PIDGIN
+}
+
+model User {
+  id               String            @id @default(cuid())
+  name             String
+  email            String            @unique
+  passwordHash     String
+  role             Role              @default(USER)
+  language         Language          @default(EN)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  enrollments      Enrollment[]
+  practiceSessions PracticeSession[]
+  scriptRequests   ScriptRequest[]
+  lessonProgress   LessonProgress[]
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  description String
+  thumbnail   String
+  published   Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  lessons     Lesson[]
+  enrollments Enrollment[]
+}
+
+model Lesson {
+  id          String           @id @default(cuid())
+  courseId    String
+  title       String
+  slug        String
+  description String
+  videoUrl    String
+  durationMin Int
+  order       Int
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress    LessonProgress[]
+
+  @@unique([courseId, slug])
+}
+
+model Enrollment {
+  id               String   @id @default(cuid())
+  userId           String
+  courseId         String
+  progressPercent  Int      @default(0)
+  lessonsCompleted Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+}
+
+model LessonProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+model PromptScenario {
+  id          String           @id @default(cuid())
+  title       String
+  slug        String           @unique
+  description String
+  guidance    String
+  active      Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  templates   ScriptTemplate[]
+  sessions    PracticeSession[]
+}
+
+model PracticeSession {
+  id              String    @id @default(cuid())
+  userId          String
+  scenarioId      String
+  recordingLabel  String
+  durationSeconds Int
+  transcript      String
+  createdAt       DateTime  @default(now())
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scenario        PromptScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  feedback        Feedback?
+}
+
+model Feedback {
+  id                String   @id @default(cuid())
+  practiceSessionId String   @unique
+  confidence        Int
+  clarity           Int
+  pace              Int
+  energy            Int
+  fillerWords       Int
+  summary           String
+  improvementTips   String
+  language          Language
+  createdAt         DateTime @default(now())
+  practiceSession   PracticeSession @relation(fields: [practiceSessionId], references: [id], onDelete: Cascade)
+}
+
+model ScriptTemplate {
+  id         String         @id @default(cuid())
+  scenarioId String
+  language   Language
+  tone       String
+  audience   String
+  template   String
+  scenario   PromptScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+}
+
+model ScriptRequest {
+  id         String   @id @default(cuid())
+  userId     String
+  scenarioId String
+  language   Language
+  tone       String
+  audience   String
+  length     String
+  output     String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ContentTranslation {
+  id             String   @id @default(cuid())
+  entityType     String
+  entityId       String
+  fieldName      String
+  language       Language
+  sourceHash     String
+  translatedText String
+  provider       String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([entityType, entityId, fieldName, language])
+}
