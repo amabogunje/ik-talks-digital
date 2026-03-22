@@ -21,6 +21,9 @@ export function Hero({ dict }: { dict: Dictionary }) {
             <Link href="/login" className="inline-flex min-w-[10rem] items-center justify-center rounded-[0.45rem] border border-white/20 px-6 py-3 font-medium text-white transition hover:border-gold/60 hover:text-gold">
               {dict.login}
             </Link>
+            <Link href="/learn-more" className="inline-flex min-w-[10rem] items-center justify-center rounded-[0.45rem] border border-white/10 bg-white/5 px-6 py-3 font-medium text-zinc-100 transition hover:border-white/25 hover:bg-white/[0.08] hover:text-white">
+              {dict.learnMore}
+            </Link>
           </div>
         </div>
 

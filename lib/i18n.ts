@@ -31,6 +31,7 @@ export const dictionaries = {
     homeIntro:
       "Learn communication, public speaking, and hosting with a premium African-first experience built for modern speakers, MCs, and event leaders.",
     startJourney: "Start your journey",
+    learnMore: "Learn More",
     featuredCourses: "Featured courses",
     lessonsLabel: "lessons",
     loginTitle: "Return to your voice.",
@@ -204,6 +205,7 @@ export const dictionaries = {
     homeIntro:
       "Apprenez la communication, la prise de parole en public et l'animation avec une experience premium pensee d'abord pour les utilisateurs africains.",
     startJourney: "Commencez votre parcours",
+    learnMore: "En savoir plus",
     featuredCourses: "Cours en vedette",
     lessonsLabel: "lecons",
     loginTitle: "Retrouvez votre voix.",
@@ -377,6 +379,7 @@ export const dictionaries = {
     homeIntro:
       "Learn communication, public speaking, and hosting with a premium African-first experience built for modern speakers, MCs, and event leaders.",
     startJourney: "Start your journey",
+    learnMore: "Learn More",
     featuredCourses: "Featured courses",
     lessonsLabel: "lessons",
     loginTitle: "Return to your voice.",
