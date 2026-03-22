@@ -28,17 +28,17 @@ export function AdminForm({ action, fields, title, text }: Props) {
   }
 
   return (
-    <form action={handleSubmit} className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+    <form action={handleSubmit} className="surface-card p-5">
       <h3 className="font-display text-2xl text-white">{title}</h3>
       <div className="mt-4 space-y-3">
         {fields.map((field) => (
           <label key={field.name} className="block space-y-2">
             <span className="text-sm text-zinc-300">{field.label}</span>
-            <input name={field.name} type={field.type ?? "text"} required className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white" />
+            <input name={field.name} type={field.type ?? "text"} required className="surface-input" />
           </label>
         ))}
       </div>
-      <button className="mt-4 rounded-full bg-gold px-5 py-3 font-medium text-black">{text.save}</button>
+      <button className="button-primary mt-4 px-5">{text.save}</button>
       {status ? <p className="mt-3 text-sm text-zinc-400">{status}</p> : null}
     </form>
   );

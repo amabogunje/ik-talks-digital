@@ -113,14 +113,7 @@ export function PracticeRecorder({ scenarioSlug, scenarioTitle, text }: Props) {
   const timerRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analysisTimerRef = useRef<number | null>(null);
-  const audioStatsRef = useRef<AudioStats>({
-    samples: 0,
-    totalLevel: 0,
-    peakLevel: 0,
-    speakingSamples: 0,
-    currentPauseSamples: 0,
-    longestPauseSamples: 0
-  });
+  const audioStatsRef = useRef<AudioStats>({ samples: 0, totalLevel: 0, peakLevel: 0, speakingSamples: 0, currentPauseSamples: 0, longestPauseSamples: 0 });
   const finalTranscriptRef = useRef("");
   const finalDurationRef = useRef(0);
 
@@ -198,14 +191,7 @@ export function PracticeRecorder({ scenarioSlug, scenarioTitle, text }: Props) {
 
     const data = new Uint8Array(analyser.fftSize);
     audioContextRef.current = context;
-    audioStatsRef.current = {
-      samples: 0,
-      totalLevel: 0,
-      peakLevel: 0,
-      speakingSamples: 0,
-      currentPauseSamples: 0,
-      longestPauseSamples: 0
-    };
+    audioStatsRef.current = { samples: 0, totalLevel: 0, peakLevel: 0, speakingSamples: 0, currentPauseSamples: 0, longestPauseSamples: 0 };
 
     analysisTimerRef.current = window.setInterval(() => {
       analyser.getByteTimeDomainData(data);
@@ -320,13 +306,7 @@ export function PracticeRecorder({ scenarioSlug, scenarioTitle, text }: Props) {
     const response = await fetch("/api/practice/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        scenarioSlug,
-        transcript: finalTranscriptRef.current,
-        durationSeconds: finalDurationRef.current || duration,
-        recordingLabel: `${scenarioTitle} practice`,
-        analysis
-      })
+      body: JSON.stringify({ scenarioSlug, transcript: finalTranscriptRef.current, durationSeconds: finalDurationRef.current || duration, recordingLabel: `${scenarioTitle} practice`, analysis })
     });
 
     const data = await response.json();
@@ -337,12 +317,12 @@ export function PracticeRecorder({ scenarioSlug, scenarioTitle, text }: Props) {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-      <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-6">
+      <div className="surface-card p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h3 className="font-display text-3xl text-white">{text.recordYourDelivery}</h3>
-          <span className="rounded-full border border-white/10 px-3 py-1 text-sm text-zinc-400">{status}</span>
+          <span className="rounded-full border border-white/10 bg-[rgba(42,42,42,0.72)] px-3 py-1 text-sm text-zinc-300">{status}</span>
         </div>
-        <div className="mt-6 aspect-video overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/60">
+        <div className="mt-6 overflow-hidden rounded-[1rem] border border-white/10 bg-[rgba(24,24,24,0.9)] aspect-video">
           {previewUrl ? (
             <video ref={videoRef} src={previewUrl} controls className="h-full w-full object-cover" />
           ) : (
@@ -350,43 +330,43 @@ export function PracticeRecorder({ scenarioSlug, scenarioTitle, text }: Props) {
           )}
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
-          <button onClick={startRecording} disabled={recording || submitting} className="rounded-full bg-gold px-5 py-3 font-medium text-black disabled:opacity-50">
+          <button onClick={startRecording} disabled={recording || submitting} className="button-primary px-5 disabled:opacity-50">
             {text.start}
           </button>
-          <button onClick={stopRecording} disabled={!recording} className="rounded-full border border-white/15 px-5 py-3 text-white disabled:opacity-50">
+          <button onClick={stopRecording} disabled={!recording} className="button-secondary px-5 disabled:opacity-50">
             {text.stop}
           </button>
-          <button onClick={submitSession} disabled={!canSubmit || submitting} className="rounded-full border border-gold/40 px-5 py-3 text-gold disabled:opacity-50">
+          <button onClick={submitSession} disabled={!canSubmit || submitting} className="button-accent-outline px-5 disabled:opacity-50">
             {submitting ? text.submitting : text.getRealCoaching}
           </button>
           <span className="self-center text-sm text-zinc-400">{text.duration}: {duration}s</span>
         </div>
       </div>
 
-      <div className="rounded-[1.75rem] border border-white/10 bg-[#111111] p-6">
+      <div className="surface-card p-6">
         <h3 className="font-display text-2xl text-white">{text.liveCoachingSignals}</h3>
         <p className="mt-3 text-sm leading-6 text-zinc-400">{text.liveCoachingIntro}</p>
 
         <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-          <div className="rounded-[1.25rem] border border-white/10 bg-black/20 p-4">
+          <div className="surface-card-muted p-4">
             <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">{text.transcriptSource}</p>
             <p className="mt-2 text-sm text-white">{supportsSpeech ? text.liveBrowserSpeech : text.audioOnlyFallback}</p>
           </div>
-          <div className="rounded-[1.25rem] border border-white/10 bg-black/20 p-4">
+          <div className="surface-card-muted p-4">
             <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">{text.detectedPace}</p>
             <p className="mt-2 text-sm text-white">{analysis?.wordsPerMinute ? `${analysis.wordsPerMinute} WPM` : text.availableAfterRecording}</p>
           </div>
-          <div className="rounded-[1.25rem] border border-white/10 bg-black/20 p-4">
+          <div className="surface-card-muted p-4">
             <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">{text.averageVocalEnergy}</p>
             <p className="mt-2 text-sm text-white">{analysis ? `${analysis.averageVolume}/100` : text.availableAfterRecording}</p>
           </div>
-          <div className="rounded-[1.25rem] border border-white/10 bg-black/20 p-4">
+          <div className="surface-card-muted p-4">
             <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">{text.longestPause}</p>
             <p className="mt-2 text-sm text-white">{analysis ? `${analysis.longestPauseSeconds}s` : text.availableAfterRecording}</p>
           </div>
         </div>
 
-        <div className="mt-5 rounded-[1.5rem] border border-white/10 bg-black/30 p-4">
+        <div className="surface-card-soft mt-5 p-4">
           <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">{text.capturedTranscript}</p>
           <p className="mt-3 min-h-24 text-sm leading-7 text-zinc-200">
             {transcript || interimTranscript || text.transcriptPrompt}

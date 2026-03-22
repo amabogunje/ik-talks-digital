@@ -40,32 +40,32 @@ export function AuthForm({ mode, text }: Props) {
   }
 
   return (
-    <form action={handleSubmit} className="space-y-5 rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-glow">
+    <form action={handleSubmit} className="surface-card space-y-5 p-6 sm:p-8">
       {mode === "signup" ? (
         <label className="block space-y-2">
           <span className="text-sm text-zinc-300">{text.fullName}</span>
-          <input name="name" required className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none ring-gold/40 focus:ring" />
+          <input name="name" required className="surface-input" />
         </label>
       ) : null}
       <label className="block space-y-2">
         <span className="text-sm text-zinc-300">{text.email}</span>
-        <input name="email" type="email" required className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none ring-gold/40 focus:ring" />
+        <input name="email" type="email" required className="surface-input" />
       </label>
       <label className="block space-y-2">
         <span className="text-sm text-zinc-300">{text.password}</span>
-        <input name="password" type="password" required minLength={8} className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none ring-gold/40 focus:ring" />
+        <input name="password" type="password" required minLength={8} className="surface-input" />
       </label>
       {mode === "signup" ? (
         <label className="block space-y-2">
           <span className="text-sm text-zinc-300">{text.preferredLanguage}</span>
-          <select name="language" defaultValue="EN" className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none ring-gold/40 focus:ring">
+          <select name="language" defaultValue="EN" className="surface-input">
             <option value="EN">English</option>
             <option value="FR">Francais</option>
           </select>
         </label>
       ) : null}
-      {error ? <p className="rounded-2xl bg-red-500/10 p-3 text-sm text-red-200">{error}</p> : null}
-      <button className="w-full rounded-full bg-gold px-6 py-3 font-medium text-black">
+      {error ? <p className="rounded-[0.85rem] bg-red-500/10 p-3 text-sm text-red-200">{error}</p> : null}
+      <button className="button-primary w-full">
         {mode === "login" ? text.login : text.createAccountButton}
       </button>
       {mode === "login" ? <p className="text-sm text-zinc-400">{text.demoLearner}: `ada@iktalks.africa` / `password123`</p> : <p className="text-sm text-zinc-400">{text.guidedDashboard}</p>}

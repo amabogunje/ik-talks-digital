@@ -15,31 +15,43 @@ export function SiteShell({ language, role, children }: Props) {
 
   return (
     <div className="min-h-screen bg-aura text-white">
-      <header className="border-b border-white/10 bg-black/30 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-5">
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between gap-3">
+      <header className="border-b border-white/10 bg-black/85 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+            <div className="flex items-center justify-between gap-3 lg:flex-1">
               <Logo />
-              <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 lg:hidden">
                 <LanguageSelect value={language} compact />
                 <form action="/api/auth/logout" method="post">
-                  <button className="rounded-full border border-gold/40 px-3 py-2 text-sm text-gold transition hover:bg-gold hover:text-black sm:px-4">
+                  <button className="button-accent-outline px-3 py-2 text-sm sm:px-4">
                     {dict.logout}
                   </button>
                 </form>
               </div>
             </div>
-            <nav className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 text-sm text-zinc-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <Link href="/dashboard" className="whitespace-nowrap rounded-full border border-white/10 bg-white/5 px-4 py-2">{dict.dashboard}</Link>
-              <Link href="/courses" className="whitespace-nowrap rounded-full border border-white/10 bg-white/5 px-4 py-2">{dict.courses}</Link>
-              <Link href="/practice" className="whitespace-nowrap rounded-full border border-white/10 bg-white/5 px-4 py-2">{dict.practice}</Link>
-              <Link href="/scripts" className="whitespace-nowrap rounded-full border border-white/10 bg-white/5 px-4 py-2">{dict.scripts}</Link>
-              {role === "ADMIN" ? <Link href="/admin" className="whitespace-nowrap rounded-full border border-white/10 bg-white/5 px-4 py-2">{dict.admin}</Link> : null}
-            </nav>
+
+            <div className="flex flex-col gap-3 lg:flex-1 lg:flex-row lg:items-center lg:justify-end lg:gap-7">
+              <nav className="-mx-1 flex items-center gap-4 overflow-x-auto px-1 text-sm tracking-[0.01em] text-zinc-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:flex-wrap lg:justify-end lg:gap-6 lg:px-0">
+                <Link href="/dashboard" className="whitespace-nowrap transition hover:text-white">{dict.dashboard}</Link>
+                <Link href="/courses" className="whitespace-nowrap transition hover:text-white">{dict.courses}</Link>
+                <Link href="/practice" className="whitespace-nowrap transition hover:text-white">{dict.practice}</Link>
+                <Link href="/scripts" className="whitespace-nowrap transition hover:text-white">{dict.scripts}</Link>
+                {role === "ADMIN" ? <Link href="/admin" className="whitespace-nowrap transition hover:text-white">{dict.admin}</Link> : null}
+              </nav>
+
+              <div className="hidden items-center gap-3 lg:flex">
+                <LanguageSelect value={language} compact />
+                <form action="/api/auth/logout" method="post">
+                  <button className="button-accent-outline px-4 py-2 text-sm">
+                    {dict.logout}
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">{children}</main>
+      <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">{children}</main>
     </div>
   );
 }

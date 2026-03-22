@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useTransition } from "react";
+import { useState } from "react";
 
 type Props = {
   lessonId: string;
@@ -11,20 +11,22 @@ type Props = {
 };
 
 export function LessonCompleteButton({ lessonId, text }: Props) {
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
+
+  async function handleClick() {
+    setLoading(true);
+    await fetch("/api/lessons/complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lessonId })
+    });
+    setLoading(false);
+    window.location.reload();
+  }
 
   return (
-    <button
-      disabled={isPending}
-      onClick={() =>
-        startTransition(async () => {
-          await fetch(`/api/lessons/${lessonId}/complete`, { method: "POST" });
-          window.location.reload();
-        })
-      }
-      className="rounded-full bg-gold px-5 py-3 font-medium text-black disabled:opacity-50"
-    >
-      {isPending ? text.saving : text.markLessonComplete}
+    <button onClick={handleClick} disabled={loading} className="button-primary px-5 disabled:opacity-50">
+      {loading ? text.saving : text.markLessonComplete}
     </button>
   );
 }

@@ -1,13 +1,17 @@
-﻿export function Logo() {
+﻿import Image from "next/image";
+import Link from "next/link";
+
+export function Logo() {
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/60 bg-gold/10 font-display text-lg text-gold">
-        IK
-      </div>
-      <div>
-        <p className="font-display text-lg tracking-wide text-white">IK Talks Digital</p>
-        <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">Speak. Lead. Host.</p>
-      </div>
-    </div>
+    <Link href="/" className="inline-flex items-center transition hover:opacity-90" aria-label="Go to homepage">
+      <Image
+        src="/iktalksdigital-logo.png"
+        alt="IK Talks Digital"
+        width={420}
+        height={126}
+        priority
+        className="h-14 w-auto object-contain sm:h-16 lg:h-20"
+      />
+    </Link>
   );
 }

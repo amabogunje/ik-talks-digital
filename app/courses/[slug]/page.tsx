@@ -27,7 +27,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
           <p className="text-xs uppercase tracking-[0.35em] text-gold sm:text-sm">{dict.courseOverview}</p>
           <h1 className="mt-3 font-display text-4xl text-white sm:mt-4 sm:text-5xl">{translatedCourse.title}</h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-300 sm:mt-5 sm:text-lg sm:leading-8">{translatedCourse.description}</p>
-          {firstLesson ? <Link href={`/learn/${course.slug}/${firstLesson.slug}`} className="mt-6 inline-flex rounded-full bg-gold px-6 py-3 font-medium text-black sm:mt-8">{dict.startOrContinue}</Link> : null}
+          {firstLesson ? <Link href={`/learn/${course.slug}/${firstLesson.slug}`} className="button-primary mt-6 sm:mt-8">{dict.startOrContinue}</Link> : null}
         </div>
         <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 sm:rounded-[1.75rem] sm:p-6">
           <p className="text-xs uppercase tracking-[0.25em] text-zinc-500 sm:text-sm">{dict.progress}</p>
@@ -46,7 +46,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                 <h3 className="mt-2 text-lg text-white sm:text-xl">{lesson.title}</h3>
                 <p className="mt-1 text-sm leading-6 text-zinc-400">{lesson.description}</p>
               </div>
-              <Link href={`/learn/${course.slug}/${lesson.slug}`} className="inline-flex justify-center rounded-full border border-white/10 px-4 py-2 text-sm text-white md:min-w-[110px]">{dict.open}</Link>
+              <Link href={`/learn/${course.slug}/${lesson.slug}`} className="button-secondary px-4 py-2 text-sm md:min-w-[110px]">{dict.open}</Link>
             </div>
           ))}
         </div>

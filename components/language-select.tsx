@@ -11,7 +11,7 @@ export function LanguageSelect({ value, compact = false }: { value: Language; co
       defaultValue={value === "FR" ? "FR" : "EN"}
       disabled={isPending}
       aria-label="Select language"
-      className={`rounded-full border border-white/10 bg-black/40 text-sm text-white outline-none ring-gold/40 focus:ring disabled:opacity-60 ${compact ? "min-w-[7.25rem] px-3 py-2" : "min-w-[8.5rem] px-4 py-2"}`}
+      className={`rounded-full border border-white/10 bg-[rgba(40,40,40,0.92)] text-sm text-white outline-none ring-gold/40 focus:ring disabled:opacity-60 ${compact ? "min-w-[7.25rem] px-3 py-2" : "min-w-[8.5rem] px-4 py-2"}`}
       onChange={(event) =>
         startTransition(async () => {
           await fetch("/api/profile/language", {
