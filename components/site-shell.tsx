@@ -1,8 +1,8 @@
-﻿import Link from "next/link";
-import { Language, Role } from "@prisma/client";
+﻿import { Language, Role } from "@prisma/client";
 import { getDictionary } from "@/lib/i18n";
 import { Logo } from "@/components/logo";
 import { LanguageSelect } from "@/components/language-select";
+import { SiteNav } from "@/components/site-nav";
 
 type Props = {
   language: Language;
@@ -31,13 +31,15 @@ export function SiteShell({ language, role, children }: Props) {
             </div>
 
             <div className="flex flex-col gap-3 lg:flex-[1.4] lg:flex-row lg:items-center lg:justify-end lg:gap-8">
-              <nav className="-mx-1 flex items-center gap-4 overflow-x-auto px-1 text-sm tracking-[0.01em] text-zinc-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:flex-nowrap lg:justify-end lg:gap-7 lg:px-0">
-                <Link href="/dashboard" className="whitespace-nowrap transition hover:text-white">{dict.dashboard}</Link>
-                <Link href="/courses" className="whitespace-nowrap transition hover:text-white">{dict.courses}</Link>
-                <Link href="/practice" className="whitespace-nowrap transition hover:text-white">{dict.practice}</Link>
-                <Link href="/scripts" className="whitespace-nowrap transition hover:text-white">{dict.scripts}</Link>
-                {role === "ADMIN" ? <Link href="/admin" className="whitespace-nowrap transition hover:text-white">{dict.admin}</Link> : null}
-              </nav>
+              <SiteNav
+                items={[
+                  { href: "/dashboard", label: dict.dashboard },
+                  { href: "/courses", label: dict.courses },
+                  { href: "/practice", label: dict.practice },
+                  { href: "/scripts", label: dict.scripts },
+                  ...(role === "ADMIN" ? [{ href: "/admin", label: dict.admin }] : [])
+                ]}
+              />
 
               <div className="hidden items-center gap-3 lg:flex">
                 <LanguageSelect value={language} compact />
