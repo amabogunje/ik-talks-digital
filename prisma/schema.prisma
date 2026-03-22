@@ -155,6 +155,7 @@ model ScriptRequest {
   id         String   @id @default(cuid())
   userId     String
   scenarioId String
+  title      String?
   language   Language
   tone       String
   audience   String
@@ -199,3 +200,4 @@ model ContentTranslation {
 
   @@unique([entityType, entityId, fieldName, language])
 }
+

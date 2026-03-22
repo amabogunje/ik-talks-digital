@@ -1,17 +1,22 @@
 ﻿import Image from "next/image";
+import Link from "next/link";
 
 type CurrentFocusCardProps = {
   eyebrow: string;
-  activeCourseLabel: string;
+  courseLabel: string;
   courseProgressLabel: string;
-  currentFocusLabel: string;
+  currentFocusLabel?: string;
   courseTitle: string;
   courseThumbnail: string;
-  focusText: string;
+  focusText?: string;
   progressPercent: number;
+  actionHref: string;
+  actionLabel: string;
 };
 
 export function CurrentFocusCard(props: CurrentFocusCardProps) {
+  const showFocus = Boolean(props.currentFocusLabel && props.focusText);
+
   return (
     <div className="surface-card p-5 sm:p-6">
       <p className="text-xs uppercase tracking-[0.32em] text-gold">{props.eyebrow}</p>
@@ -22,13 +27,15 @@ export function CurrentFocusCard(props: CurrentFocusCardProps) {
         </div>
         <div className="space-y-4 p-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">{props.activeCourseLabel}</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">{props.courseLabel}</p>
             <p className="mt-2 text-xl text-white">{props.courseTitle}</p>
           </div>
-          <div className="surface-card-muted p-4">
-            <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">{props.currentFocusLabel}</p>
-            <p className="mt-2 text-sm leading-6 text-zinc-200">{props.focusText}</p>
-          </div>
+          {showFocus ? (
+            <div className="surface-card-muted p-4">
+              <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">{props.currentFocusLabel}</p>
+              <p className="mt-2 text-sm leading-6 text-zinc-200">{props.focusText}</p>
+            </div>
+          ) : null}
           <div>
             <div className="flex items-center justify-between text-sm text-zinc-400">
               <span>{props.courseProgressLabel}</span>
@@ -38,6 +45,9 @@ export function CurrentFocusCard(props: CurrentFocusCardProps) {
               <div className="h-2 rounded-full bg-gold" style={{ width: `${props.progressPercent}%` }} />
             </div>
           </div>
+          <Link href={props.actionHref} className="button-primary w-full px-5 text-center sm:w-auto">
+            {props.actionLabel}
+          </Link>
         </div>
       </div>
     </div>

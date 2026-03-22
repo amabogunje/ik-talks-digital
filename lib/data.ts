@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+﻿import { prisma } from "@/lib/prisma";
 import { percent } from "@/lib/utils";
 
 function averageScore(feedback?: { confidence: number; clarity: number; pace: number; energy: number } | null) {
@@ -126,13 +126,23 @@ export async function getDashboardData(userId: string, language: string) {
     })
   ]);
 
-  const enrichedEnrollments = enrollments.map((enrollment) => ({
-    ...enrollment,
-    computedProgress: enrollment.progressPercent || percent(enrollment.lessonsCompleted, enrollment.course.lessons.length),
-    currentLesson: getCurrentLesson(enrollment.course.lessons, enrollment.lessonsCompleted)
-  }));
+  const enrichedEnrollments = enrollments.map((enrollment) => {
+    const computedProgress = enrollment.progressPercent || percent(enrollment.lessonsCompleted, enrollment.course.lessons.length);
+    const status = enrollment.lessonsCompleted === 0
+      ? "not_started"
+      : computedProgress >= 100 || enrollment.lessonsCompleted >= enrollment.course.lessons.length
+        ? "completed"
+        : "in_progress";
 
-  const activeEnrollment = enrichedEnrollments[0] ?? null;
+    return {
+      ...enrollment,
+      computedProgress,
+      status,
+      currentLesson: getCurrentLesson(enrollment.course.lessons, enrollment.lessonsCompleted)
+    };
+  });
+
+  const activeEnrollment = enrichedEnrollments.find((enrollment) => enrollment.status === "in_progress") ?? null;
   const latestFeedback = feedbackHistory[0] ?? null;
   const previousFeedback = feedbackHistory[1] ?? null;
   const latestScore = averageScore(latestFeedback);
@@ -144,7 +154,6 @@ export async function getDashboardData(userId: string, language: string) {
 
   const isFrench = language === "FR";
   const recommendedCourse = courses[0] ?? null;
-  const recommendedLesson = recommendedCourse ? getCurrentLesson(recommendedCourse.lessons, 0) : null;
   const recommendedProgress = recommendedCourse ? percent(0, recommendedCourse.lessons.length) : 0;
 
   return {
@@ -167,6 +176,7 @@ export async function getDashboardData(userId: string, language: string) {
       : [],
     currentFocus: activeEnrollment
       ? {
+          kind: "active" as const,
           courseTitle: activeEnrollment.course.title,
           courseThumbnail: activeEnrollment.course.thumbnail,
           focusText: activeEnrollment.currentLesson
@@ -181,17 +191,12 @@ export async function getDashboardData(userId: string, language: string) {
         }
       : recommendedCourse
         ? {
+            kind: "recommended" as const,
             courseTitle: recommendedCourse.title,
             courseThumbnail: recommendedCourse.thumbnail,
-            focusText: recommendedLesson
-              ? isFrench
-                ? `Commencez avec ${recommendedLesson.title}.`
-                : `Start with ${recommendedLesson.title}.`
-              : isFrench
-                ? "Commencez votre parcours avec ce cours recommande."
-                : "Start your journey with this recommended course.",
+            focusText: null,
             progressPercent: recommendedProgress,
-            href: recommendedLesson ? `/learn/${recommendedCourse.slug}/${recommendedLesson.slug}` : `/courses/${recommendedCourse.slug}`
+            href: `/courses/${recommendedCourse.slug}`
           }
         : null
   };
@@ -257,6 +262,4 @@ export async function getCourseBySlug(slug: string, userId?: string) {
     resumeHref: currentLesson ? `/learn/${course.slug}/${currentLesson.slug}` : `/courses/${course.slug}`
   };
 }
-
-
 

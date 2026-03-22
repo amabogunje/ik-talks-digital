@@ -16,8 +16,8 @@ export function SiteShell({ language, role, children }: Props) {
   return (
     <div className="min-h-screen bg-aura text-white">
       <header className="border-b border-white/10 bg-black/85 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+        <div className="mx-auto max-w-[88rem] px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
             <div className="flex items-center justify-between gap-3 lg:flex-1">
               <Logo />
               <div className="flex items-center gap-2 sm:gap-3 lg:hidden">
@@ -30,8 +30,8 @@ export function SiteShell({ language, role, children }: Props) {
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 lg:flex-1 lg:flex-row lg:items-center lg:justify-end lg:gap-7">
-              <nav className="-mx-1 flex items-center gap-4 overflow-x-auto px-1 text-sm tracking-[0.01em] text-zinc-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:flex-wrap lg:justify-end lg:gap-6 lg:px-0">
+            <div className="flex flex-col gap-3 lg:flex-[1.4] lg:flex-row lg:items-center lg:justify-end lg:gap-8">
+              <nav className="-mx-1 flex items-center gap-4 overflow-x-auto px-1 text-sm tracking-[0.01em] text-zinc-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:flex-nowrap lg:justify-end lg:gap-7 lg:px-0">
                 <Link href="/dashboard" className="whitespace-nowrap transition hover:text-white">{dict.dashboard}</Link>
                 <Link href="/courses" className="whitespace-nowrap transition hover:text-white">{dict.courses}</Link>
                 <Link href="/practice" className="whitespace-nowrap transition hover:text-white">{dict.practice}</Link>

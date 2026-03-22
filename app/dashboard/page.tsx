@@ -1,4 +1,4 @@
-﻿import { CourseCard } from "@/components/course-card";
+import { CourseCard } from "@/components/course-card";
 import { CurrentFocusCard } from "@/components/current-focus-card";
 import { DashboardHero } from "@/components/dashboard-hero";
 import { DashboardRecommendsCard } from "@/components/dashboard-recommends-card";
@@ -16,29 +16,27 @@ export default async function DashboardPage() {
   const copy = getDashboardCopy(language);
   const dict = getDictionary(user.language);
   const data = await getDashboardData(user.id, user.language);
-  const latestFeedback = data.latestFeedback;
   const focusHref = data.currentFocus?.href ?? "/courses";
+  const isRecommendedFocus = data.currentFocus?.kind === "recommended";
 
   return (
     <SiteShell language={user.language} role={user.role}>
       <div className="space-y-8 sm:space-y-10">
         <DashboardHero
-          headline={copy.headline}
-          support={copy.support}
-          primaryHref={focusHref}
-          primaryLabel={copy.continueLesson}
-          secondaryHref="/practice"
-          secondaryLabel={copy.startPractice}
+          headline={isRecommendedFocus ? copy.recommendedHeadline : copy.headline}
+          support={isRecommendedFocus ? copy.recommendedSupport : copy.support}
           focusCard={
             <CurrentFocusCard
-              eyebrow={copy.currentFocus}
-              activeCourseLabel={copy.activeCourse}
-              currentFocusLabel={copy.currentFocus}
+              eyebrow={isRecommendedFocus ? copy.recommendedForYou : copy.currentFocus}
+              courseLabel={isRecommendedFocus ? copy.recommendedCourse : copy.activeCourse}
+              currentFocusLabel={isRecommendedFocus ? undefined : copy.currentFocus}
               courseProgressLabel={copy.courseProgress}
               courseTitle={data.currentFocus?.courseTitle ?? copy.noActiveCourse}
               courseThumbnail={data.currentFocus?.courseThumbnail ?? "/ak-hero.png.png"}
-              focusText={data.currentFocus?.focusText ?? copy.beginLearningPath}
+              focusText={isRecommendedFocus ? undefined : data.currentFocus?.focusText ?? copy.beginLearningPath}
               progressPercent={data.currentFocus?.progressPercent ?? 0}
+              actionHref={focusHref}
+              actionLabel={isRecommendedFocus ? copy.startRecommendedCourse : copy.continueLesson}
             />
           }
         />
@@ -74,22 +72,10 @@ export default async function DashboardPage() {
 
             <LatestCoachingCard
               title={copy.latestCoachingReview}
-              scenarioTitle={latestFeedback?.practiceSession.scenario.title}
-              contextLabel={copy.fromLastPractice}
-              confidenceLabel={copy.confidenceTrend}
-              confidenceValue={latestFeedback ? `${latestFeedback.confidence}%` : null}
-              clarityLabel={copy.clarityTrend}
-              clarityValue={latestFeedback ? `${latestFeedback.clarity}%` : null}
-              summary={latestFeedback?.summary}
-              topTipLabel={copy.topTipToImproveNext}
-              topTip={data.latestTip ?? copy.firstPracticeNudge}
-              feedbackHref={latestFeedback ? `/practice/${latestFeedback.practiceSession.scenario.slug}/feedback?session=${latestFeedback.practiceSessionId}` : undefined}
-              feedbackLabel={copy.viewFullFeedback}
-              practiceHref={latestFeedback ? `/practice/${latestFeedback.practiceSession.scenario.slug}` : "/practice"}
+              practiceHref="/practice"
               practiceLabel={copy.practiceAgain}
-              emptyTitle={copy.noCoachingYet}
-              emptyBody={copy.firstPracticeNudge}
-              emptyPreview={copy.firstPracticePreview}
+              body={copy.firstPracticeNudge}
+              preview={copy.firstPracticePreview}
             />
           </section>
         </section>

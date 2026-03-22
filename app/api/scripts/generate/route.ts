@@ -24,17 +24,13 @@ export async function POST(request: Request) {
     additionalContext
   });
 
-  await prisma.scriptRequest.create({
-    data: {
-      userId: user.id,
-      scenarioId: scenario.id,
-      language: targetLanguage,
-      tone,
-      audience,
-      length,
-      output
+  return NextResponse.json({
+    ok: true,
+    output,
+    scenario: {
+      id: scenario.id,
+      title: scenario.title,
+      slug: scenario.slug
     }
   });
-
-  return NextResponse.json({ ok: true, output });
 }

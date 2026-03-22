@@ -9,7 +9,7 @@ import { translateCourseText, translateLessonsText } from "@/lib/translation";
 
 const pageCopy = {
   EN: {
-    title: "Choose the right course for your next leap.",
+    title: "",
     intro: "Pick up where you left off, revisit completed training, or start a new speaking path that matches the room you want to lead.",
     searchLabel: "Search courses",
     searchPlaceholder: "Search by course title or focus area",
@@ -41,7 +41,7 @@ const pageCopy = {
     advanced: "Advanced"
   },
   FR: {
-    title: "Choisissez le bon cours pour votre prochaine progression.",
+    title: "",
     intro: "Reprenez la ou vous vous etes arrete, revisitez un cours termine ou commencez un nouveau parcours adapte a la salle que vous voulez tenir.",
     searchLabel: "Rechercher un cours",
     searchPlaceholder: "Recherchez par titre ou par domaine",
@@ -150,25 +150,18 @@ export default async function CoursesPage() {
 
   return (
     <SiteShell language={language} role={user.role}>
-      <div className="space-y-8 sm:space-y-10">
-        <section className="space-y-4">
-          <p className="text-xs uppercase tracking-[0.35em] text-gold sm:text-sm">{dict.courseLibrary}</p>
-          <h1 className="font-display text-4xl text-white sm:text-5xl">{copy.title}</h1>
-          <p className="max-w-3xl text-base leading-7 text-zinc-300 sm:text-lg sm:leading-8">{copy.intro}</p>
-        </section>
-
-        <CourseLibraryBrowser
-          copy={copy}
-          myCourses={(library.myCourses as CourseState[]).map(serializeCourse)}
-          availableCourses={(library.availableCourses as CourseState[]).map(serializeCourse)}
-          completedCourses={(library.completedCourses as CourseState[]).map(serializeCourse)}
-          skillFilters={[
-            { value: CourseSkillArea.PUBLIC_SPEAKING, label: copy.publicSpeaking },
-            { value: CourseSkillArea.HOSTING, label: copy.hosting },
-            { value: CourseSkillArea.COMMUNICATION, label: copy.communication }
-          ]}
-        />
-      </div>
+      <CourseLibraryBrowser
+        copy={{
+          ...copy,
+          eyebrow: dict.courseLibrary,
+          title: copy.title,
+          intro: copy.intro
+        }}
+        myCourses={(library.myCourses as CourseState[]).map(serializeCourse)}
+        availableCourses={(library.availableCourses as CourseState[]).map(serializeCourse)}
+        completedCourses={(library.completedCourses as CourseState[]).map(serializeCourse)}
+      />
     </SiteShell>
   );
 }
+
