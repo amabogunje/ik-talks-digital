@@ -1,5 +1,6 @@
 ﻿import bcrypt from "bcryptjs";
-import { Language, PrismaClient, Role } from "@prisma/client";
+import { CourseLevel, CourseSkillArea, Language, PrismaClient, Role } from "@prisma/client";
+import { recommendedResources } from "@/lib/recommends";
 
 const prisma = new PrismaClient();
 
@@ -14,6 +15,7 @@ async function main() {
   await prisma.scriptTemplate.deleteMany();
   await prisma.scriptRequest.deleteMany();
   await prisma.promptScenario.deleteMany();
+  await prisma.recommendationResource.deleteMany();
   await prisma.user.deleteMany();
 
   const passwordHash = await bcrypt.hash("password123", 10);
@@ -109,6 +111,9 @@ async function main() {
       description: "Build stage confidence, vocal control, and the presence to hold any room.",
       thumbnail:
         "https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80",
+      featured: true,
+      skillArea: CourseSkillArea.PUBLIC_SPEAKING,
+      level: CourseLevel.BEGINNER,
       lessons: {
         create: [
           {
@@ -140,6 +145,9 @@ async function main() {
       description: "Learn MC structure, transitions, and crowd-reading for live events.",
       thumbnail:
         "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80",
+      featured: true,
+      skillArea: CourseSkillArea.HOSTING,
+      level: CourseLevel.BEGINNER,
       lessons: {
         create: [
           {
@@ -170,6 +178,9 @@ async function main() {
       description: "Shape memorable stories, persuasive messages, and audience connection for talks that move people.",
       thumbnail:
         "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=80",
+      featured: false,
+      skillArea: CourseSkillArea.COMMUNICATION,
+      level: CourseLevel.ADVANCED,
       lessons: {
         create: [
           {
@@ -191,6 +202,26 @@ async function main() {
         ]
       }
     }
+  });
+
+  await prisma.recommendationResource.createMany({
+    data: recommendedResources.map((resource, index) => ({
+      titleEn: resource.title.EN,
+      titleFr: resource.title.FR,
+      source: resource.source,
+      contentType: resource.contentType,
+      category: resource.category,
+      summaryEn: resource.summary.EN,
+      summaryFr: resource.summary.FR,
+      ikNoteEn: resource.ikNote.EN,
+      ikNoteFr: resource.ikNote.FR,
+      estimatedLength: resource.estimatedLength,
+      url: resource.url,
+      thumbnail: resource.thumbnail,
+      featured: resource.featured,
+      active: true,
+      sortOrder: index
+    }))
   });
 
   await prisma.enrollment.create({

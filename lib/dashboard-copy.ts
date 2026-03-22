@@ -1,4 +1,4 @@
-import { SupportedLanguage } from "@/lib/locale";
+﻿import { SupportedLanguage } from "@/lib/locale";
 
 const dashboardCopy = {
   EN: {
@@ -19,6 +19,9 @@ const dashboardCopy = {
     continueLearning: "Continue learning",
     viewAllCourses: "View all courses",
     latestCoachingReview: "Latest coaching review",
+    recommendsEyebrow: "IK Recommends",
+    recommendsSubtitle: "These handpicked lessons, talks, articles, and tools help you sharpen your craft beyond the core IK lessons.",
+    recommendsCta: "Explore IK's Recommendations",
     fromLastPractice: "From your last practice",
     topTipToImproveNext: "Top tip to improve next",
     viewFullFeedback: "View full feedback",
@@ -66,6 +69,9 @@ const dashboardCopy = {
     continueLearning: "Continuer l'apprentissage",
     viewAllCourses: "Voir tous les cours",
     latestCoachingReview: "Derniere revue de coaching",
+    recommendsEyebrow: "IK Recommends",
+    recommendsSubtitle: "Ces lecons, talks, articles et outils choisis avec soin vous aident a aller plus loin que les lecons IK du coeur de la plateforme.",
+    recommendsCta: "Explorer les recommandations d'IK",
     fromLastPractice: "Depuis votre derniere pratique",
     topTipToImproveNext: "Conseil principal pour la suite",
     viewFullFeedback: "Voir le retour complet",
@@ -102,4 +108,5 @@ export type DashboardCopy = (typeof dashboardCopy)[SupportedLanguage];
 export function getDashboardCopy(language: SupportedLanguage): DashboardCopy {
   return dashboardCopy[language];
 }
+
 

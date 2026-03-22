@@ -18,6 +18,17 @@ enum Language {
   PIDGIN
 }
 
+enum CourseSkillArea {
+  PUBLIC_SPEAKING
+  HOSTING
+  COMMUNICATION
+}
+
+enum CourseLevel {
+  BEGINNER
+  ADVANCED
+}
+
 model User {
   id               String            @id @default(cuid())
   name             String
@@ -34,20 +45,23 @@ model User {
 }
 
 model Course {
-  id          String       @id @default(cuid())
+  id          String          @id @default(cuid())
   title       String
-  slug        String       @unique
+  slug        String          @unique
   description String
   thumbnail   String
-  published   Boolean      @default(true)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  published   Boolean         @default(true)
+  featured    Boolean         @default(false)
+  skillArea   CourseSkillArea @default(PUBLIC_SPEAKING)
+  level       CourseLevel     @default(BEGINNER)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
   lessons     Lesson[]
   enrollments Enrollment[]
 }
 
 model Lesson {
-  id          String           @id @default(cuid())
+  id          String   @id @default(cuid())
   courseId    String
   title       String
   slug        String
@@ -55,7 +69,7 @@ model Lesson {
   videoUrl    String
   durationMin Int
   order       Int
-  course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   progress    LessonProgress[]
 
   @@unique([courseId, slug])
@@ -148,6 +162,27 @@ model ScriptRequest {
   output     String
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RecommendationResource {
+  id              String   @id @default(cuid())
+  titleEn         String
+  titleFr         String?
+  source          String
+  contentType     String
+  category        String
+  summaryEn       String
+  summaryFr       String?
+  ikNoteEn        String
+  ikNoteFr        String?
+  estimatedLength String
+  url             String
+  thumbnail       String
+  featured        Boolean  @default(false)
+  active          Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model ContentTranslation {

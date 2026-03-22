@@ -1,6 +1,7 @@
-import { CourseCard } from "@/components/course-card";
+﻿import { CourseCard } from "@/components/course-card";
 import { CurrentFocusCard } from "@/components/current-focus-card";
 import { DashboardHero } from "@/components/dashboard-hero";
+import { DashboardRecommendsCard } from "@/components/dashboard-recommends-card";
 import { LatestCoachingCard } from "@/components/latest-coaching-card";
 import { SiteShell } from "@/components/site-shell";
 import { requireUser } from "@/lib/auth";
@@ -63,7 +64,14 @@ export default async function DashboardPage() {
             </div>
           </section>
 
-          <section className="order-1 lg:order-2">
+          <section className="order-1 space-y-4 lg:order-2">
+            <DashboardRecommendsCard
+              eyebrow={copy.recommendsEyebrow}
+              subtitle={copy.recommendsSubtitle}
+              ctaLabel={copy.recommendsCta}
+              href="/recommends"
+            />
+
             <LatestCoachingCard
               title={copy.latestCoachingReview}
               scenarioTitle={latestFeedback?.practiceSession.scenario.title}
